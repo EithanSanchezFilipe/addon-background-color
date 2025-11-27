@@ -1,0 +1,34 @@
+name: Build addon pour firefox
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install node
+        uses: actions/setup-node@v3
+        with: 
+          node-version: 18
+
+      - name: Copy repo
+        uses: actions/checkout@v5
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: "Pack:zip"
+        run: npm run pack:zip
+      
+      - name: sign firefox addon
+        run: |
+          npx web-ext sign \
+            --api-key ${{ secrets.AMO_JWT_ISSUER }} \
+            --api-secret ${{ secrets.AMO_JWT_SECRET }} \
+            --channel unlisted \
+            --source-dir ./dist-artifacts \
+            --artifacts-dir ./signed
