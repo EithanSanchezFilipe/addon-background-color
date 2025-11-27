@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Audit dependances
-        uses: actions/dependency-review-action@v4
+        run: npm audit
 
       - name: Check linting
         run: npm run lint
