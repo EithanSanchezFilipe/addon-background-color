@@ -1,4 +1,4 @@
-name: Build addon pour firefox
+name: Deploy add-on to Firefox AMO
 
 on:
   push:
