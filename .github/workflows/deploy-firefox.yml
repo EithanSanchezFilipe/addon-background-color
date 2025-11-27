@@ -24,6 +24,9 @@ jobs:
       - name: build firefox addon package
         run: npm run build:firefox
       
+      - name: list files
+        run: ls -laR ./
+
       - name: sign firefox addon
         run: |
           npx web-ext sign \
