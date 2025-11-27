@@ -1,0 +1,38 @@
+name: Build addon pour firefox
+
+on:
+  push:
+    branch:
+      - main
+
+jobs:
+  build:
+    runs-on: debian-latest
+    steps: 
+      - name: Install node
+        uses: actions/setup-node@v3
+        with: 
+          node-version: 18
+
+      - name: Copy repo
+        uses: actions/checkout@v5
+
+      - name: Audit dependances
+        uses: actions/dependency-review-action@v4
+
+      - name: Check linting
+        run: npm run lint
+
+      - name: create firefox artifact
+        run: npm run zip:firefox
+        uses: actions/upload-artifact@v5
+        with:
+          name: my-firefox-zip
+          path: .output\addon-background-color-0.0.1-firefox.zip
+
+      - name: create chrome artifact
+        run: npm run zip
+        uses: actions/upload-artifact@v5
+        with:
+          name: my-chrome-zip
+          path: .output\addon-background-color-0.0.1-chrome.zip
